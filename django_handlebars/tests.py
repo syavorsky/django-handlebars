@@ -69,7 +69,7 @@ class TagsTest(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.spec = time.strftime("test-tags-%H.%M.%S")
-        cls.tplpath = "%s.html" % os.path.join(appsettings.TPL_DIR, cls.spec)
+        cls.tplpath = "%s.html" % os.path.join(appsettings.TPL_DIR, "./././.", cls.spec)
         
         with open(cls.tplpath, "w") as f:
             f.write("whatever")

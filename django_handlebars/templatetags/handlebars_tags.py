@@ -21,7 +21,7 @@ def handlebars_scripts():
 
 @register.simple_tag()
 def handlebars_template(name):
-    basepath = appsettings.TPL_CMPDIR if appsettings.COMPILED else appsettings.TPL_DIR 
+    basepath = os.path.realpath(appsettings.TPL_CMPDIR if appsettings.COMPILED else appsettings.TPL_DIR) 
     ext = "js" if appsettings.COMPILED else "html"
     
     path = os.path.realpath("%s/%s.%s" % (basepath, name, ext))

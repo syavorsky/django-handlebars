@@ -81,6 +81,7 @@ class Compiler(object):
 
 
     def translate_path(self, src_path):
+        src_path = os.path.realpath(src_path) 
         dest_path = src_path[len(self.src_dir) + 1:]
         dest_path = os.path.join(self.dest_dir, dest_path)
         if os.path.splitext(src_path)[1]:
@@ -101,7 +102,7 @@ class Compiler(object):
         
         dest_path = self.translate_path(src_path)
         if not is_outdated(src_path, dest_path):
-            self.console.out("<color:yellow>Compiled<color:reset> %s" % os.path.relpath(dest_path))
+            self.console.out("<color:yellow>Compiled<color:reset> %s" % dest_path.replace(self.dest_dir, ""))
             return
         
         if src_path not in self.schedule:
@@ -138,7 +139,7 @@ class Compiler(object):
                     for dir in dirs:
                         os.rmdir(os.path.join(root, dir))
                 os.rmdir(dest_path)
-            self.console.out('<color:green>Deleted<color:reset> %s' % os.path.relpath(dest_path))
+            self.console.out('<color:green>Deleted<color:reset> %s' % dest_path.replace(self.dest_dir, ""))
     
     
     def terminate(self):
@@ -161,11 +162,9 @@ class CompilerMock(object):
     def hit(self, method, path):
         key = "%s-%s" % (method, path)
         self.stats[key] = self.stats.get(key, 0) + 1
-        #print "%s : %s" % (key, self.stats[key])
     
     def stat(self, method, path):
         key = "%s-%s" % (method, path)
-        #print "%s : %s" % (key, self.stats.get(key, None))
         return self.stats.get(key, 0)
 
     def add_path(self, path):
