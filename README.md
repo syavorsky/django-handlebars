@@ -6,7 +6,7 @@ How to install
 --------------
 1. Install package from PyPi `pip install django-handlebars`. Or alternatively pull the repo and run `python setup.py install`
 2. Add `django_handlebars` to project's `settings.INSTALLED_APPS`
-3. Optionaly add `HANDLEBARS_*` configuration parameters to the `settings.py`. See `django_handlebars.appsettings` for available options and explanations
+3. Optionaly add `HANDLEBARS_*` configuration parameters to the `settings.py`. See [django_handlebars.appsettings](https://github.com/yavorskiy/django-handlebars/blob/master/django_handlebars/appsettings.py) for available options and explanations
 4. Run `./manage.py test django_handlebars` to check configuration and requirments.
 5. That should be it. Application is not providing any models or URLs.
 
