@@ -1,4 +1,3 @@
-
 import os
 import logging
 os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = 'localhost:8088'
@@ -85,35 +84,35 @@ class TagsTest(TestCase):
     
     def test_handlebars_scripts(self):
         html = self._html("handlebars_scripts")
-        self.assertNotEqual(html.find("{tpl}.html"), -1, "Configured to request .html templates when COMPILED=False")
-        self.assertNotEqual(html.find("handlebars.js"), -1, "Loads Handlebars including parser when COMPILED=False")
+        self.assertNotEqual(html.find("{tpl}.html"), -1, "Template load URL is not pointed to .html when COMPILED=False")
+        self.assertNotEqual(html.find("handlebars.js"), -1, "Doesn't include Handlebars parser when COMPILED=False")
     
     @compiled_mode(True)
     def test_handlebars_scripts_compiled(self):
         html = self._html("handlebars_scripts")
-        self.assertNotEqual(html.find("{tpl}.js"), -1, "Configured to request .js templates when COMPILED=True")
-        self.assertNotEqual(html.find("handlebars.runtime.js"), -1, "Loads Handlebars.runtime when COMPILED=True")
+        self.assertNotEqual(html.find("{tpl}.js"), -1, "Template load URL is not pointed to .js templates when COMPILED=True")
+        self.assertNotEqual(html.find("handlebars.runtime.js"), -1, "Doesn't include Handlebars.runtime when COMPILED=True")
         
     def test_handlebars_template(self):
         html = self._html('handlebars_template "not/existing/template"')
-        self.assertNotEquals(html.find("Invalid template spec"), -1, "Handles invalid template spec")
+        self.assertNotEquals(html.find("Invalid template spec"), -1, "Passing invalid template spec")
         
     def test_handlebars_template_found(self):
         html = self._html('handlebars_template "%s"' % self.spec)
-        self.assertEqual(html.find("Invalid template spec"), -1, "Found template by spec")
+        self.assertEqual(html.find("Invalid template spec"), -1, "Failed to include template by spec")
         
     @compiled_mode(True)
     def test_handlebars_template_missing_compiled(self):
         html = self._html('handlebars_template "%s"' % self.spec)
-        self.assertNotEquals(html.find("Invalid template spec"), -1, "Fails if compiled template is missing")
+        self.assertNotEquals(html.find("Invalid template spec"), -1, "Passed inclusion of non existing compiled template")
         
     def test_handlebars_template_tolerate_abspath(self):
         html = self._html('handlebars_template "/%s"' % self.spec)
-        self.assertEquals(html.find("Invalid template spec"), -1, "Tolerates absolute path specs")
+        self.assertEquals(html.find("Invalid template spec"), -1, "Doesn't tolerate template specs starting with slash")
     
     def test_handlebars_template_safe_path(self):        
         html = self._html('handlebars_template "../../%s"' % self.spec)
-        self.assertNotEquals(html.find("Invalid template spec"), -1, "Doesn't allow templates outside of appsettings.TPL_DIR")
+        self.assertNotEquals(html.find("Invalid template spec"), -1, "Passed template spec pointed to outside of appsettings.TPL_DIR")
 
 
 
