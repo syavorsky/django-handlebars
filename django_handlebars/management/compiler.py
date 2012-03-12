@@ -21,8 +21,8 @@ class Compiler(object):
                 script_path=None, script_extras=None, 
                 num_threads=None, console=None):
         
-        src_path = src_path or appsettings.TPL_DIR
-        dest_path = dest_path or appsettings.TPL_CMPDIR
+        src_path = os.path.realpath(src_path or appsettings.TPL_DIR)
+        dest_path = os.path.realpath(dest_path or appsettings.TPL_CMPDIR)
         
         if not os.access(src_path, os.R_OK):
             raise ReadableError('Compiler source path "%s" is not readable' % src_path)
