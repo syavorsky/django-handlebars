@@ -37,7 +37,7 @@ class Command(BaseCommand):
             action='store_true',
             dest='quiet',
             default=False,
-            help='Do not format output'),
+            help='Run with no output'),
         )
 
 
