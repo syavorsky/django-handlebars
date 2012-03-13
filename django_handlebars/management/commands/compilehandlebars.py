@@ -27,7 +27,7 @@ class Command(BaseCommand):
             action='store_true',
             dest='watch',
             default=False,
-            help='Watch changes with appsettings.TPL_DIR and compile'),
+            help='Watch for changes within appsettings.TPL_DIR and compile'),
         make_option('--raw',
             action='store_true',
             dest='raw',
