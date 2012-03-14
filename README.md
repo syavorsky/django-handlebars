@@ -79,7 +79,7 @@ Run `./manage.py compilehandlebars --help`
 
 <pre>
   --clean               Remove all previously compiled templates
-  --watch               Watch changes with appsettings.TPL_DIR and compile
+  --watch               Watch for changes within appsettings.TPL_DIR and compile
   --raw                 Do not format output
   --quiet               Run with no output
 </pre>
