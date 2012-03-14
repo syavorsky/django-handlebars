@@ -23,15 +23,12 @@ META = dict(
     include_package_data=True,
     zip_safe=False,
     classifiers=[
-        "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
         "Framework :: Django",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: JavaScript",
-        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
-        "Topic :: Software Development :: Testing",
     ],
 )
 

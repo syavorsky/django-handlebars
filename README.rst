@@ -97,5 +97,5 @@ On ``compilehandlebars`` start all template files with mtime newer than compiled
 
 License
 -------
-|copy| 2012 Sergii Iavorskyi, Licensed new-style BSD. Contains `Handlebars.js <https://github.com/wycats/handlebars.js>`_ |copy| 2011 Yehuda Katz. See LICENSE file for more information.
+Copyright 2012 Sergii Iavorskyi, Licensed new-style BSD. Contains `Handlebars.js <https://github.com/wycats/handlebars.js>`_ copyright 2011 Yehuda Katz. See LICENSE file for more information.
 
