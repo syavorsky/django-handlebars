@@ -1,29 +1,16 @@
 import os
-import logging
-os.environ['DJANGO_LIVE_TEST_SERVER_ADDRESS'] = 'localhost:8088'
-
-from unittest import skipIf
-from django.test import TestCase
-from django.test import LiveServerTestCase
-from django.test.utils import override_settings
-
-import appsettings   
-
-# settings test
-import urllib2
-
-# tags test
 import time
-from django.template import Template, Context
-
-# templates compilation
-from django_handlebars.utils import cant_compile, cant_observe
-from django.core.management import call_command
-
-# compiling and observing
-from django_handlebars.utils import ReadableError
 import tempfile
 import shutil
+import urllib2
+
+from django.template import Template, Context
+from unittest import skipIf
+from django.test import TestCase
+from django.test.utils import override_settings as _override_settings
+
+import appsettings
+from django_handlebars.utils import ReadableError, cant_compile, cant_observe
 
 
 CANT_COMPILE = "; ".join(cant_compile())
@@ -31,85 +18,90 @@ CANT_OBSERVE = "; ".join(cant_observe())
 
 
 
-def compiled_mode(on=False):
-    def decorator(func):
-        def decorated(self, *args, **kwargs):
-            with self.settings(HANDLEBARS_COMPILED=on):
-                reload(appsettings)
-                func(self, *args, **kwargs)
-        return decorated
-    return decorator
+class override_settings(_override_settings):
+    def enable(self):
+        super(override_settings, self).enable()
+        reload(appsettings)
 
+    def disable(self):
+        super(override_settings, self).disable()
+        reload(appsettings)
 
-
-class SettingsTest(LiveServerTestCase):
-    
-    def test_paths(self):
-        self.assertTrue(os.access(appsettings.TPL_DIR, os.R_OK), "appsettings.TPL_DIR path is not readable")
-        self.assertTrue(os.access(appsettings.TPL_CMPDIR, os.W_OK), "appsettings.TPL_CMPDIR '%s' path is not writeable" % appsettings.TPL_CMPDIR)
-        self.assertTrue(os.access(appsettings.SCRIPT_PATH, os.R_OK), "appsettings.SCRIPT_PATH path is not readable")
         
-    def test_urls(self):
-        for script in ["handlebars.js", "handlebars.runtime.js", "handlebars.django.js"] + appsettings.SCRIPT_EXTRAS:
-            url = self.live_server_url + appsettings.SCRIPT_URL + script
-            try:
-                result = urllib2.urlopen(url)
-            except urllib2.HTTPError:
-                result = None
-                pass
-            self.assertIsNotNone(result, 'Missing script "appsettings.SCRIPT_URL/%s"' % script)
-        
-
 
 class TagsTest(TestCase):
+    
+    src_dir = tempfile.mkdtemp(prefix="tags-test-sources-")
+    cmp_dir = tempfile.mkdtemp(prefix="tags-test-compiled-")
     
     def _html(self, tag):
         return Template("{%% load handlebars_tags %%}{%% %s %%}" % tag).render(Context())
     
     @classmethod
     def setUpClass(cls):
-        cls.spec = time.strftime("test-tags-%H.%M.%S")
-        cls.tplpath = "%s.html" % os.path.join(appsettings.TPL_DIR, "./././.", cls.spec)
+        cls.spec = "sub1/sub2/template"
+        src_file = "%s.html" % os.path.join(cls.src_dir, cls.spec)
         
-        with open(cls.tplpath, "w") as f:
+        os.makedirs(os.path.dirname(src_file))
+        with open(src_file, "w") as f:
             f.write("whatever")
     
     @classmethod
     def tearDownClass(cls):
-        os.remove(cls.tplpath)
-        
-    def setUp(self):
-        with self.settings(HANDLEBARS_COMPILED=False):
-            reload(appsettings)
+        shutil.rmtree(cls.src_dir)
+        shutil.rmtree(cls.cmp_dir)
     
+    def setUp(self):
+        self.settings(HANDLEBARS_COMPILED=False)
+    
+    @override_settings(HANDLEBARS_TPL_DIR=src_dir, 
+                       HANDLEBARS_TPL_CMPDIR=cmp_dir,
+                       HANDLEBARS_COMPILED=False) 
     def test_handlebars_scripts(self):
         html = self._html("handlebars_scripts")
+        self.assertNotEqual(html.find("<script>"), -1, "Failed to render")
         self.assertNotEqual(html.find("{tpl}.html"), -1, "Template load URL is not pointed to .html when COMPILED=False")
         self.assertNotEqual(html.find("handlebars.js"), -1, "Doesn't include Handlebars parser when COMPILED=False")
     
-    @compiled_mode(True)
+    @override_settings(HANDLEBARS_TPL_DIR=src_dir, 
+                       HANDLEBARS_TPL_CMPDIR=cmp_dir,
+                       HANDLEBARS_COMPILED=True)
     def test_handlebars_scripts_compiled(self):
         html = self._html("handlebars_scripts")
         self.assertNotEqual(html.find("{tpl}.js"), -1, "Template load URL is not pointed to .js templates when COMPILED=True")
         self.assertNotEqual(html.find("handlebars.runtime.js"), -1, "Doesn't include Handlebars.runtime when COMPILED=True")
-        
+    
+    @override_settings(HANDLEBARS_TPL_DIR=src_dir, 
+                       HANDLEBARS_TPL_CMPDIR=cmp_dir,
+                       HANDLEBARS_COMPILED=False)
     def test_handlebars_template(self):
         html = self._html('handlebars_template "not/existing/template"')
         self.assertNotEquals(html.find("Invalid template spec"), -1, "Passing invalid template spec")
-        
+    
+    @override_settings(HANDLEBARS_TPL_DIR=src_dir, 
+                       HANDLEBARS_TPL_CMPDIR=cmp_dir,
+                       HANDLEBARS_COMPILED=False)        
     def test_handlebars_template_found(self):
         html = self._html('handlebars_template "%s"' % self.spec)
         self.assertEqual(html.find("Invalid template spec"), -1, "Failed to include template by spec")
         
-    @compiled_mode(True)
+    @override_settings(HANDLEBARS_TPL_DIR=src_dir, 
+                       HANDLEBARS_TPL_CMPDIR=cmp_dir,
+                       HANDLEBARS_COMPILED=True)
     def test_handlebars_template_missing_compiled(self):
         html = self._html('handlebars_template "%s"' % self.spec)
         self.assertNotEquals(html.find("Invalid template spec"), -1, "Passed inclusion of non existing compiled template")
-        
+    
+    @override_settings(HANDLEBARS_TPL_DIR=src_dir, 
+                       HANDLEBARS_TPL_CMPDIR=cmp_dir,
+                       HANDLEBARS_COMPILED=False)
     def test_handlebars_template_tolerate_abspath(self):
         html = self._html('handlebars_template "/%s"' % self.spec)
         self.assertEquals(html.find("Invalid template spec"), -1, "Doesn't tolerate template specs starting with slash")
     
+    @override_settings(HANDLEBARS_TPL_DIR=src_dir, 
+                       HANDLEBARS_TPL_CMPDIR=cmp_dir,
+                       HANDLEBARS_COMPILED=False)
     def test_handlebars_template_safe_path(self):        
         html = self._html('handlebars_template "../../%s"' % self.spec)
         self.assertNotEquals(html.find("Invalid template spec"), -1, "Passed template spec pointed to outside of appsettings.TPL_DIR")
@@ -210,7 +202,6 @@ class CompilerTest(TestCase):
         time.sleep(1)
         self.assertFalse(os.path.exists(dir_to), "Compiler failed to compile dir")
             
-
 
 @skipIf(CANT_OBSERVE, CANT_OBSERVE)
 class ObserverTest(TestCase):
