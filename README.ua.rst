@@ -20,13 +20,13 @@ django-handlebars
 ====================
 День треба починати з доброї кави, а темплейти {% load %}:
 
-	{% load handlebars_tags %}
-	<html>
-	<head>
-		{% handlebars_scripts %}
-	</head>
-	<body></body> 
-	</html>
+  {% load handlebars_tags %}
+  <html>
+  <head>
+    {% handlebars_scripts %}
+  </head>
+  <body></body> 
+  </html>
 
 На сторінці з’явиться пара тегів ``script``. Перший -- ``handlebars.js``, або ``handlebars.runtime.js``, якщо темплейти вже скомпільовані і ``settings.HANDLEBARS_COMPILED = True``. Інший — ``handlebars.django.js``, котрий додасть метод ``Handlebars.tpl()`` для завантаження і читання темплейтів. 
 
@@ -34,26 +34,28 @@ django-handlebars
 -------------------------------
 Так простіше і швидше, підійде для початку. Темплейти компілюються щоразу заново і лишній десяток кілобайт парсера додається бонусом до кожної сторінки. Переконавшись, що ``*.html`` темплейт доступний зі статичного URL-а, пишемо::
 	
-	var data = {title: "The title", body: "whatever"}
+  var data = {title: "The title", body: "whatever"}
 
-	Handlebars.tpl("path/to/template", {
-		success: function(renderer){
-			console.log("Дивіться, куме, як гарно: ", renderer(data));
-		},
-		error: function(xhr, err){
-			console.warn("Холєра ясна, can't load the template", err);
-		}
-	});
+  Handlebars.tpl("your/template/spec", {
+      success: function(renderer){
+          console.log("Rendered template:", renderer(data));
+      },
+      error: function(xhr, err){
+          console.warn("Ooops, can't load template", err);
+      }
+  });
 
 що завантажить темплейт з ``http://domain.com/ + settings.HANDLEBARS_TPL_URL + path/to/template + .html``. Повторний виклик поверне темплейт з кешу (не того, котрий готівка, заначка в безпеці).
 
 Якщо доступний `jQuery <https://github.com/jquery/jquery>`_, то ``Handlebars.tpl()`` поверне jQuery.Deferred::
 
-	df.done(function(renderer){
-		console.log("Краса смерекова:", renderer(data));
-	}).fail(function(xhr, err){
-		console.warn("Аби тебе дідько вхопив: ", err);
-	});
+  var df = Handlebars.tpl("your/template/spec");
+
+  df.done(function(renderer){
+      console.log("Rendered template:", renderer(data));
+  }).fail(function(xhr, err){
+      console.warn("Ooops, can't load template", err);
+  });
 
 Якщо ж немає, то все загрузиться дідівським XHR-ом, скромно і без музики.
 
@@ -65,13 +67,13 @@ django-handlebars
 --------------------------
 В обох випадках маємо HTTP-запит, котрого можна позбутись::
 
-	{% handlebars_template "your/template/spec" %}
+  {% handlebars_template "your/template/spec" %}
 
 Тег додасть на сторінку ``<script>Handlebars.tpl("your/template/spec", tpl)</script>``, де tpl -- скомпільований, або сирий темплейт.
 
 Компілюємо
 --------------
-``./manage.py compilehandlebars --help``::
+  ./manage.py compilehandlebars --help
 
   --clean               Remove all previously compiled templates
   --watch               Watch for changes within appsettings.TPL_DIR and compile
