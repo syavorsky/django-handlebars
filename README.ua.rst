@@ -38,10 +38,10 @@ django-handlebars
 
   Handlebars.tpl("your/template/spec", {
       success: function(renderer){
-          console.log("Rendered template:", renderer(data));
+          console.log("Дивіться, куме, як гарно:", renderer(data));
       },
       error: function(xhr, err){
-          console.warn("Ooops, can't load template", err);
+          console.warn("Холєра ясна, can't load the template", err);
       }
   });
 
@@ -52,9 +52,9 @@ django-handlebars
   var df = Handlebars.tpl("your/template/spec");
 
   df.done(function(renderer){
-      console.log("Rendered template:", renderer(data));
+      console.log("Краса смерекова:", renderer(data));
   }).fail(function(xhr, err){
-      console.warn("Ooops, can't load template", err);
+      console.warn("Аби тебе дідько вхопив:", err);
   });
 
 Якщо ж немає, то все загрузиться дідівським XHR-ом, скромно і без музики.
@@ -72,7 +72,8 @@ django-handlebars
 Тег додасть на сторінку ``<script>Handlebars.tpl("your/template/spec", tpl)</script>``, де tpl -- скомпільований, або сирий темплейт.
 
 Компілюємо
---------------::
+--------------
+Повертаємось до консольки::
 
   ./manage.py compilehandlebars --help
 
