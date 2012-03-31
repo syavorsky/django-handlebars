@@ -73,7 +73,7 @@ django-handlebars
 
 Компілюємо
 --------------
-::
+ ::
   ./manage.py compilehandlebars --help
 
   --clean               Remove all previously compiled templates
