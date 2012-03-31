@@ -18,7 +18,7 @@ django-handlebars
 
 Користаємося благами
 ====================
-День треба починати з доброї кави, а темплейти {% load %}:
+День треба починати з доброї кави, а темплейти {% load %} ::
 
   {% load handlebars_tags %}
   <html>
@@ -73,6 +73,7 @@ django-handlebars
 
 Компілюємо
 --------------
+::
   ./manage.py compilehandlebars --help
 
   --clean               Remove all previously compiled templates
