@@ -72,8 +72,8 @@ django-handlebars
 Тег додасть на сторінку ``<script>Handlebars.tpl("your/template/spec", tpl)</script>``, де tpl -- скомпільований, або сирий темплейт.
 
 Компілюємо
---------------
- ::
+--------------::
+
   ./manage.py compilehandlebars --help
 
   --clean               Remove all previously compiled templates
