@@ -5,6 +5,9 @@ django-handlebars
 
 Отож, повтиравши руки і притягнувши консоль ближче, рушаймо:
 
+
+Встановлюємо
+============
 1. Досягаємо. ``pip install django-handlebars`` або ``python setup.py install``
 
 2. Прикручуємо. Додаємо ``django_handlebars`` до ``settings.INSTALLED_APPS``
@@ -81,6 +84,8 @@ django-handlebars
   --watch               Watch for changes within appsettings.TPL_DIR and compile
   --raw                 Do not format output
   --quiet               Run with no output
+
+
 
 License (Містичні манускрипти. Не перекладається)
 -------------------------------------------------
