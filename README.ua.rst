@@ -8,7 +8,7 @@ django-handlebars
 
 Встановлюємо
 ============
-1. Досягаємо. ``pip install django-handlebars`` або ``python setup.py install``
+1. **Досягаємо.** ``pip install django-handlebars`` або ``python setup.py install``
 
 2. Прикручуємо. Додаємо ``django_handlebars`` до ``settings.INSTALLED_APPS``
 
