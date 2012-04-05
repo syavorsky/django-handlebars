@@ -10,13 +10,13 @@ django-handlebars
 ============
 1. **Досягаємо.** ``pip install django-handlebars`` або ``python setup.py install``
 
-2. Прикручуємо. Додаємо ``django_handlebars`` до ``settings.INSTALLED_APPS``
+2. **Прикручуємо.** Додаємо ``django_handlebars`` до ``settings.INSTALLED_APPS``
 
-3. Підточуємо. Об’являємо в ``settings.py`` змінні ``HANDLEBARS_*`` по зразку `django_handlebars.appsettings <https://github.com/yavorskiy/django-handlebars/blob/master/django_handlebars/appsettings.py>`_
+3. **Підточуємо.** Об’являємо в ``settings.py`` змінні ``HANDLEBARS_*`` по зразку `django_handlebars.appsettings <https://github.com/yavorskiy/django-handlebars/blob/master/django_handlebars/appsettings.py>`_
 
-4. Перевіряємо. ``./manage.py test django_handlebars``
+4. **Перевіряємо.** ``./manage.py test django_handlebars``
 
-5. Радуймося і співаймо.
+5. **Радуймося і співаймо.**
 
 
 Користаємося благами
