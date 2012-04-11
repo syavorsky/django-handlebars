@@ -5,20 +5,23 @@ django-handlebars
 
 Отож, повтиравши руки і притягнувши консоль ближче, рушаймо:
 
-1. Досягаємо. ``pip install django-handlebars`` або ``python setup.py install``
 
-2. Прикручуємо. Додаємо ``django_handlebars`` до ``settings.INSTALLED_APPS``
+Встановлюємо
+============
+1. **Досягаємо.** Все як завжди, ``pip install django-handlebars`` або ``python setup.py install``
 
-3. Підточуємо. Об’являємо в ``settings.py`` змінні ``HANDLEBARS_*`` по зразку `django_handlebars.appsettings <https://github.com/yavorskiy/django-handlebars/blob/master/django_handlebars/appsettings.py>`_
+2. **Прикручуємо.** Додаємо ``django_handlebars`` до ``settings.INSTALLED_APPS``
 
-4. Перевіряємо. ``./manage.py test django_handlebars``
+3. **Підточуємо.** Об’являємо в ``settings.py`` змінні ``HANDLEBARS_*`` по зразку `django_handlebars.appsettings <https://github.com/yavorskiy/django-handlebars/blob/master/django_handlebars/appsettings.py>`_
 
-5. Радуймося і співаймо.
+4. **Перевіряємо.** ``./manage.py test django_handlebars``
+
+5. **Радуймося і співаймо.**
 
 
 Користаємося благами
 ====================
-День треба починати з доброї кави, а темплейти {% load %} ::
+Кожен правовірний девелопер знає, що день треба починати з доброї кави, а темплейти з {% load %} ::
 
   {% load handlebars_tags %}
   <html>
@@ -28,11 +31,11 @@ django-handlebars
   <body></body> 
   </html>
 
-На сторінці з’явиться пара тегів ``script``. Перший -- ``handlebars.js``, або ``handlebars.runtime.js``, якщо темплейти вже скомпільовані і ``settings.HANDLEBARS_COMPILED = True``. Інший — ``handlebars.django.js``, котрий додасть метод ``Handlebars.tpl()`` для завантаження і читання темплейтів. 
+Чуда не обіцяю, але на сторінці з’явиться пара тегів ``script``. Перший — ``handlebars.js``, або ``handlebars.runtime.js``, якщо темплейти вже скомпільовані і ``settings.HANDLEBARS_COMPILED = True``. Інший — ``handlebars.django.js``, котрий додасть метод ``Handlebars.tpl()`` для завантаження і читання темплейтів. 
 
 Компілюємо теплейти в браузері.
 -------------------------------
-Так простіше і швидше, підійде для початку. Темплейти компілюються щоразу заново і лишній десяток кілобайт парсера додається бонусом до кожної сторінки. Переконавшись, що ``*.html`` темплейт доступний зі статичного URL-а, пишемо::
+Так простіше і швидше, підійде для початку. Проте, темплейти компілюються щоразу заново, і лишній десяток кілобайт парсера на кожній сторінці гнітить девелоперську душу прагнучу досконалості. Переконавшись, що ``*.html`` темплейт доступний зі статичного URL-а, пишемо::
 	
   var data = {title: "The title", body: "whatever"}
 
@@ -65,11 +68,11 @@ django-handlebars
 
 Бабу з возу. Шануйте коней.
 --------------------------
-В обох випадках маємо HTTP-запит, котрого можна позбутись::
+В обох випадках маємо HTTP-запит, котрого можна позбутись, передбачливо склавши темплейти в кеш на етапі генерації сторінки::
 
   {% handlebars_template "your/template/spec" %}
 
-Тег додасть на сторінку ``<script>Handlebars.tpl("your/template/spec", tpl)</script>``, де tpl -- скомпільований, або сирий темплейт.
+Тег додасть на сторінку ``<script>Handlebars.tpl("your/template/spec", tpl)</script>``, де tpl — скомпільований, або сирий темплейт.
 
 Компілюємо
 --------------
@@ -82,8 +85,10 @@ django-handlebars
   --raw                 Do not format output
   --quiet               Run with no output
 
-License (Не перекладається)
----------------------------
+
+
+License (Містичні манускрипти. Не перекладається)
+-------------------------------------------------
 Copyright 2012 Sergii Iavorskyi, Licensed new-style BSD. Contains `Handlebars.js <https://github.com/wycats/handlebars.js>`_ copyright 2011 Yehuda Katz. See LICENSE file for more information.
 
 
