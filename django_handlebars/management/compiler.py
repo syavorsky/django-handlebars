@@ -18,7 +18,7 @@ from django_handlebars.utils import NullConsole, ReadableError, is_outdated
 class Compiler(object):
     
     def __init__(self, src_path=None, dest_path=None, src_mask=None, 
-                script_path=None, script_extras=None, 
+                script_path=None, script_extras=None, jswrapper=None, 
                 num_threads=None, console=None):
         
         src_path = os.path.realpath(src_path or appsettings.TPL_DIR)
@@ -49,6 +49,7 @@ class Compiler(object):
         script_path = script_path or appsettings.SCRIPT_PATH
         script_extras = script_extras or appsettings.SCRIPT_EXTRAS
         num_threads = num_threads or appsettings.NUM_THREADS
+        jswrapper = jswrapper or appsettings.TPL_JSWRAPPER
 
         jsruntime = spidermonkey.Runtime()
         handlebars_scripts = ''
@@ -68,7 +69,7 @@ class Compiler(object):
                 self.console.err("<color:red>Failed to setup JS context<color:reset> %s" % err.message)
                 return
             
-            thread = CompileWorker(self.queue, self.schedule, jscontext, self.console)
+            thread = CompileWorker(self.queue, self.schedule, jscontext, self.console, jswrapper=jswrapper)
             thread.setDaemon(True)
             thread.start()
             self.threads.append(thread)

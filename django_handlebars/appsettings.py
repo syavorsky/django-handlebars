@@ -14,7 +14,7 @@ root = os.path.dirname(__file__)
 path = lambda p: os.path.join(root, p[:-1] if p.endswith("/") else p)
 
 __all__ = ("NUM_THREADS", "COMPILED",
-    "TPL_DIR", "TPL_CMPDIR", "TPL_MASK", "TPL_URL", 
+    "TPL_DIR", "TPL_CMPDIR", "TPL_MASK", "TPL_URL", "TPL_JSWRAPPER",
     "SCRIPT_PATH", "SCRIPT_EXTRAS", "SCRIPT_TPL",)
 
 # Tells whether compiled or or raw templates should be used in browser
@@ -41,6 +41,10 @@ TPL_URL = "%sjs/templates-src/%%s.html" % settings.STATIC_URL
 
 # Compiled templates URL
 TPL_CMPURL = "%sjs/templates/%%s.js" % settings.STATIC_URL
+
+# Optional callable wrapping compiled template
+# and returning string to written into file
+TPL_JSWRAPPER = None
 
 # File system path to the directory storing handlebars.js
 # and scripts listed in SCRIPT_EXTRAS. This is used by Compiler
