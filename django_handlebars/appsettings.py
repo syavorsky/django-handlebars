@@ -17,7 +17,7 @@ __all__ = ("NUM_THREADS", "COMPILED",
     "TPL_DIR", "TPL_CMPDIR", "TPL_MASK", "TPL_URL", "TPL_JSWRAPPER",
     "SCRIPT_PATH", "SCRIPT_EXTRAS", "SCRIPT_TPL",)
 
-# Tells whether compiled or or raw templates should be used in browser
+# Tells whether compiled or raw templates should be used in browser
 # By default it assumes True if required packages installed
 COMPILED = len(cant_compile()) == 0
 
