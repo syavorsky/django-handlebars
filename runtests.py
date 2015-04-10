@@ -30,12 +30,16 @@ except ImportError:
 else:
     setup()
 
-from django.test.simple import DjangoTestSuiteRunner
+try:
+    from django.test.runner import DiscoverRunner as Runner
+except ImportError:
+    from django.test.simple import DjangoTestSuiteRunner as Runner
+
 
 
 def runtests(*args, **kwargs):
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    test_runner = DjangoTestSuiteRunner(**kwargs)
+    test_runner = Runner(**kwargs)
     failures = test_runner.run_tests(["django_handlebars"])
     sys.exit(failures)
 
