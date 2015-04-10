@@ -23,6 +23,13 @@ if not settings.configured:
         ],
     )
 
+try:
+    from django import setup
+except ImportError:
+    pass
+else:
+    setup()
+
 from django.test.simple import DjangoTestSuiteRunner
 
 
