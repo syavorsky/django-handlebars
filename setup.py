@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 META = dict(
     name="django-handlebars",
-    version="0.1",
+    version="0.1.1",
     description="Handlebars for Django",
     long_description=open("README.rst").read(),
     author="Sergii Iavorskyi",
