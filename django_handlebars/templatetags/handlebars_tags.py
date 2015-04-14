@@ -1,8 +1,8 @@
 
+import json
 import os
 
 from django import template
-from django.utils import simplejson 
 from django_handlebars import appsettings
 
 register = template.Library()
@@ -14,7 +14,7 @@ def handlebars_scripts():
 <script>var handlebars_config = %(conf)s;</script>
 <script src="%(base)s%(renderer)s"></script>
 <script src="%(base)shandlebars.django.js"></script>''' % {
-    "conf": simplejson.dumps(appsettings.SCRIPT_CONF), 
+    "conf": json.dumps(appsettings.SCRIPT_CONF), 
     "base": appsettings.SCRIPT_URL,
     "renderer": "handlebars.runtime.js" if appsettings.COMPILED else "handlebars.js",}
 
@@ -32,7 +32,7 @@ def handlebars_template(name):
         src = f.read()
     
     if not appsettings.COMPILED:
-        src = simplejson.dumps(src)
+        src = json.dumps(src)
     
     return '<script>%s</script>' % (appsettings.SCRIPT_TPL % {"namespace": name, "compiled": src})
 
