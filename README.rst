@@ -1,6 +1,9 @@
 =================
 django-handlebars
 =================
+
+.. image:: http://unmaintained.tech/badge.svg
+
 django-handlebars integrates `Handlebars <http://handlebarsjs.com/>`_ JavaScript templating engine with `Django <https://www.djangoproject.com/>`_. It provides Python and JavaScript helpers for wrapping templates inclusion and loading routines. Optionaly django-handlebars provides ``manage.py`` commands facilitating compilation (requires ``python-spidermonkey``) and live templates assets synchronization as you developing (requires ``pyinotify``).
 
 How to install
